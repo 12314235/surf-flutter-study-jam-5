@@ -3,6 +3,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:mem_generator/screen/custom_widgets/button.dart';
 import 'package:mem_generator/screen/meme_generator_screen.dart';
 import 'package:mem_generator/services/image_gallery_source.dart';
+import 'package:mem_generator/services/meme_camera_source.dart';
 
 class ImageFromGalleryModalWindow extends StatelessWidget {
   final MemeGeneratorScreenState parent;
@@ -16,11 +17,27 @@ class ImageFromGalleryModalWindow extends StatelessWidget {
       color: Colors.black,
       height: MediaQuery.of(context).size.height * 0.1,
       width: double.infinity,
-      child: MyButton(
-        onPressed: () {
-          parent.changeImageSource(MemeGallerySource());
-        },
-        text: 'Выбрать фото',
+      child: Row(
+        children: [
+          Expanded(
+            child: MyButton(
+              onPressed: () {
+                parent.changeImageSource(MemeGallerySource());
+                Navigator.pop(context);
+              },
+              text: 'Выбрать фото',
+            ),
+          ),
+          Expanded(
+            child: MyButton(
+              onPressed: () {
+                parent.changeImageSource(MemeCameraSource());
+                Navigator.pop(context);
+              },
+              text: 'Сделать фото',
+            ),
+          ),
+        ],
       )
     );
   }

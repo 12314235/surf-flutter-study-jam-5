@@ -61,6 +61,13 @@ class DemotivatorSettingsModalWindow extends StatelessWidget {
                   );
                 },
               ),
+              MyButton(
+                text: 'Поделиться',
+                onPressed: () {
+                  parent.screenshotAndShare();
+                  Navigator.pop(context);
+                },
+              ),
             ],
           ),
         ));
