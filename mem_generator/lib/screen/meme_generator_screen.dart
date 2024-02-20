@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:mem_generator/screen/custom_widgets/button.dart';
 
+import '../services/image_source.dart';
+import '../services/image_url_source.dart';
 import 'demotivator_settings_modal_window.dart';
 import 'main_screen_image_inherited.dart';
-import 'modal_window.dart';
 
 class MemeGeneratorScreen extends StatefulWidget {
   MemeGeneratorScreen({Key? key}) : super(key: key);
@@ -14,8 +14,7 @@ class MemeGeneratorScreen extends StatefulWidget {
 
 class MemeGeneratorScreenState extends State<MemeGeneratorScreen> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
-  String _url =
-      'https://i.cbc.ca/1.6713656.1679693029!/fileImage/httpImage/image.jpg_gen/derivatives/16x9_780/this-is-fine.jpg';
+  MemeSource _imageSource = MemeUrlSource(pictureUrl: 'https://i.cbc.ca/1.6713656.1679693029!/fileImage/httpImage/image.jpg_gen/derivatives/16x9_780/this-is-fine.jpg');
   String _text = 'Здесь мог быть ваш мем';
 
   void _showOrHide() {
@@ -26,9 +25,9 @@ class MemeGeneratorScreenState extends State<MemeGeneratorScreen> {
     );
   }
 
-  void changeUrl(String url) {
+  void changeImageSource(MemeSource imageSource) {
     setState(() {
-      _url = url;
+      _imageSource = imageSource;
     });
   }
 
@@ -36,25 +35,6 @@ class MemeGeneratorScreenState extends State<MemeGeneratorScreen> {
     setState(() {
       _text = text;
     });
-  }
-
-  Future<Widget> getImageWidget(String? pictureUrl) async {
-    if (pictureUrl == null) throw Exception('Image URL is null');
-    try {
-      return Image.network(
-        pictureUrl,
-        loadingBuilder: (_, Widget child, ImageChunkEvent? loadingProgress) {
-          if (loadingProgress == null) return child;
-          return const Center(
-            child: CircularProgressIndicator(
-              color: Colors.white,
-            ),
-          );
-        },
-      );
-    } catch (e) {
-      rethrow;
-    }
   }
 
   @override
@@ -68,7 +48,7 @@ class MemeGeneratorScreenState extends State<MemeGeneratorScreen> {
     return Scaffold(
       key: _scaffoldKey,
       body: MainScreenMemeProperties(
-        url: _url,
+        imageSource: _imageSource,
         text: _text,
         child: Scaffold(
           backgroundColor: Colors.black,
@@ -95,8 +75,7 @@ class MemeGeneratorScreenState extends State<MemeGeneratorScreen> {
                               padding: const EdgeInsets.all(4.0),
                               child: Builder(builder: (innerContext) {
                                 return FutureBuilder(
-                                  future: getImageWidget(
-                                      MainScreenMemeProperties.of(innerContext).url),
+                                  future: _imageSource.getImage(),
                                   builder:
                                       (futureBuilderContextontext, snapshot) {
                                     if (snapshot.hasData &&

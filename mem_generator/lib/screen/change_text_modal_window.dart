@@ -1,20 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:mem_generator/screen/custom_widgets/button.dart';
-import 'package:mem_generator/screen/main_screen_image_inherited.dart';
 import 'package:mem_generator/screen/meme_generator_screen.dart';
 
-import '../services/image_url_source.dart';
-
-class ImageFromUrlModalWindow extends StatelessWidget {
-  ImageFromUrlModalWindow({required this.parent, super.key});
+class ChangeTextModalWindow extends StatelessWidget {
+  ChangeTextModalWindow({required this.parent, super.key});
 
   final TextEditingController _textEditingController = TextEditingController();
-  final _validationKey = GlobalKey<FormState>();
   final MemeGeneratorScreenState parent;
-
-  bool _isValidUrl(String? url) {
-    return url == null ? false : Uri.parse(url).isAbsolute;
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,16 +17,7 @@ class ImageFromUrlModalWindow extends StatelessWidget {
           children: [
             Expanded(
               child: TextFormField(
-                key: _validationKey,
                 controller: _textEditingController,
-                autovalidateMode: AutovalidateMode.onUserInteraction,
-                validator: (value) {
-                  if(_isValidUrl(value)) {
-                    return "";
-                  } else {
-                    return null;
-                  }
-                },
                 decoration: const InputDecoration(
                     isDense: true,
                     errorBorder: OutlineInputBorder(
@@ -42,7 +25,7 @@ class ImageFromUrlModalWindow extends StatelessWidget {
                         color: Colors.red,
                       )
                     ),
-                    border: OutlineInputBorder(), hintText: 'Enter URL',
+                    border: OutlineInputBorder(), hintText: 'Введите текст',
                     hintStyle: TextStyle(color: Colors.white)),
                     cursorColor: Colors.white,
                     style: const TextStyle(color: Colors.white),
@@ -54,15 +37,9 @@ class ImageFromUrlModalWindow extends StatelessWidget {
                 width: MediaQuery.of(context).size.width * 0.85,
                 child: MyButton(
                   onPressed: () {
-                      if(_isValidUrl(_textEditingController.value.text)) {
-                        parent.changeImageSource(MemeUrlSource(pictureUrl: _textEditingController.value.text));
-                        Navigator.pop(context);
-                      } else if(_validationKey.currentState == null) {
-                        Navigator.pop(context);
-                      } else {
-                        _validationKey.currentState?.validate();
-                      }
-                    },
+                    parent.changeText(_textEditingController.value.text);
+                    Navigator.pop(context);
+                  },
                   text: 'Загрузить',
                 )
               ),
@@ -71,4 +48,5 @@ class ImageFromUrlModalWindow extends StatelessWidget {
         ),
     );
   }
+  
 }

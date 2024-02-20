@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 
-class MainScreenMemeProperties extends InheritedWidget {
-  const MainScreenMemeProperties({required this.url, required this.text, super.key, required super.child});
+import '../services/image_source.dart';
 
-  final String url;
+class MainScreenMemeProperties extends InheritedWidget {
+  const MainScreenMemeProperties({required this.imageSource, required this.text, super.key, required super.child});
+
+  final MemeSource imageSource;
   final String text;
 
   static MainScreenMemeProperties? maybeOf(BuildContext context) {
@@ -18,7 +20,6 @@ class MainScreenMemeProperties extends InheritedWidget {
 
   @override
   bool updateShouldNotify(covariant MainScreenMemeProperties oldWidget) {
-    return url != oldWidget.url || text != oldWidget.text;
+    return imageSource != oldWidget.imageSource || text != oldWidget.text;
   }
-  
 }
