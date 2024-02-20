@@ -16,7 +16,7 @@ class MemeGeneratorScreenState extends State<MemeGeneratorScreen> {
 
   void _showOrHide() {
     _scaffoldKey.currentState?.showBottomSheet(
-      (_) => ModalWindow(
+      (_) => DemotivatorSettingsModalWindow(
         parent: this,
       ),
     );
@@ -117,11 +117,51 @@ class MemeGeneratorScreenState extends State<MemeGeneratorScreen> {
               onPressed: () {
                 _showOrHide();
               },
-              label: const Text('Изменить изображение')),
+              label: const Text('Изменить демотиватор')),
         ),
       ),
     );
   }
 }
 
-class MainScreenImageProvider {}
+class DemotivatorSettingsModalWindow extends StatelessWidget {
+  const DemotivatorSettingsModalWindow({super.key, required this.parent});
+
+  final MemeGeneratorScreenState parent;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+       
+      appBar: AppBar(
+        backgroundColor: Colors.black,
+        title: const Text('Настройки демотиватора', style: TextStyle(color: Colors.white),),
+      ),
+      body: Container(
+        color: Colors.black,
+        child: ListView(
+          children: [
+            FloatingActionButton(onPressed: () {
+              showBottomSheet(
+                context: context, 
+                builder: (context) {
+                  return ModalWindow(parent: parent);
+                },);
+            }, 
+            child: const Text('Получить картинку по ссылке')),
+            FloatingActionButton(onPressed: () {
+              showBottomSheet(
+                context: context, 
+                builder: (context) {
+                  return ModalWindow(parent: parent);
+                },);
+            }, 
+            child: const Text('Изменить текст демотиватора')),
+          ],
+        ),
+      )
+    );
+  }
+  
+}
+
