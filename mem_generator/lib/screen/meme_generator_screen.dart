@@ -5,6 +5,7 @@ import '../services/image_source.dart';
 import '../services/image_url_source.dart';
 import 'demotivator_settings_modal_window.dart';
 import 'main_screen_image_inherited.dart';
+import 'sharing_meme_modal_window.dart';
 
 class MemeGeneratorScreen extends StatefulWidget {
   MemeGeneratorScreen({Key? key}) : super(key: key);
@@ -41,7 +42,11 @@ class MemeGeneratorScreenState extends State<MemeGeneratorScreen> {
 
   void screenshotAndShare() {
     screenshotController.capture().then((value) {
-      
+      _scaffoldKey.currentState?.showBottomSheet(
+      (_) => SharingMemeModalWindow(
+        data: value,
+      ),
+    );
     },);
   }
 

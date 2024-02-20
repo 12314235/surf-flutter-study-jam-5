@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mem_generator/screen/custom_widgets/button.dart';
@@ -65,6 +67,12 @@ class DemotivatorSettingsModalWindow extends StatelessWidget {
                 text: 'Поделиться',
                 onPressed: () {
                   parent.screenshotAndShare();
+                  Navigator.pop(context);
+                },
+              ),
+              MyButton(
+                text: 'Назад',
+                onPressed: () {
                   Navigator.pop(context);
                 },
               ),
