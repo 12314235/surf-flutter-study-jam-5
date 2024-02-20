@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:mem_generator/screen/custom_widgets/button.dart';
 import 'package:mem_generator/screen/meme_generator_screen.dart';
 
-class ModalWindow extends StatelessWidget {
-  ModalWindow({required this.parent, super.key});
+class ImageFromUrlModalWindow extends StatelessWidget {
+  ImageFromUrlModalWindow({required this.parent, super.key});
 
   final TextEditingController _textEditingController = TextEditingController();
   final _validationKey = GlobalKey<FormState>();
@@ -32,6 +33,7 @@ class ModalWindow extends StatelessWidget {
                   }
                 },
                 decoration: const InputDecoration(
+                    isDense: true,
                     errorBorder: OutlineInputBorder(
                       borderSide: BorderSide(
                         color: Colors.red,
@@ -47,8 +49,8 @@ class ModalWindow extends StatelessWidget {
             Expanded(
               child: Container(
                 width: MediaQuery.of(context).size.width * 0.85,
-                child: FloatingActionButton(
-                    onPressed: () {
+                child: MyButton(
+                  onPressed: () {
                       if(_isValidUrl(_textEditingController.value.text)) {
                         parent.changeUrl(_textEditingController.value.text);
                         Navigator.pop(context);
@@ -58,8 +60,8 @@ class ModalWindow extends StatelessWidget {
                         _validationKey.currentState?.validate();
                       }
                     },
-                    child: const Text('Загрузить'),
-                  ),
+                  text: 'Загрузить',
+                )
               ),
             ),
           ],

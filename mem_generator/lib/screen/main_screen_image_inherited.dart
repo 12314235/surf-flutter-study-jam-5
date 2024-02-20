@@ -1,23 +1,24 @@
 import 'package:flutter/material.dart';
 
-class MainScreenImageUrl extends InheritedWidget {
-  const MainScreenImageUrl({required this.url, super.key, required super.child});
+class MainScreenMemeProperties extends InheritedWidget {
+  const MainScreenMemeProperties({required this.url, required this.text, super.key, required super.child});
 
   final String url;
+  final String text;
 
-  static MainScreenImageUrl? maybeOf(BuildContext context) {
-    return context.dependOnInheritedWidgetOfExactType<MainScreenImageUrl>();
+  static MainScreenMemeProperties? maybeOf(BuildContext context) {
+    return context.dependOnInheritedWidgetOfExactType<MainScreenMemeProperties>();
   }
 
-  static MainScreenImageUrl of(BuildContext context) {
-    final MainScreenImageUrl? result = maybeOf(context);
+  static MainScreenMemeProperties of(BuildContext context) {
+    final MainScreenMemeProperties? result = maybeOf(context);
     assert(result != null, 'No MainScreenImageUrl found in context');
     return result!;
   }
 
   @override
-  bool updateShouldNotify(covariant MainScreenImageUrl oldWidget) {
-    return url != oldWidget.url;
+  bool updateShouldNotify(covariant MainScreenMemeProperties oldWidget) {
+    return url != oldWidget.url || text != oldWidget.text;
   }
   
 }

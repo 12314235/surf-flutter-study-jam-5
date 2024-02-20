@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:mem_generator/screen/custom_widgets/button.dart';
 
+import 'demotivator_settings_modal_window.dart';
 import 'main_screen_image_inherited.dart';
 import 'modal_window.dart';
 
@@ -12,7 +14,9 @@ class MemeGeneratorScreen extends StatefulWidget {
 
 class MemeGeneratorScreenState extends State<MemeGeneratorScreen> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
-  String _url = 'https://i.cbc.ca/1.6713656.1679693029!/fileImage/httpImage/image.jpg_gen/derivatives/16x9_780/this-is-fine.jpg';
+  String _url =
+      'https://i.cbc.ca/1.6713656.1679693029!/fileImage/httpImage/image.jpg_gen/derivatives/16x9_780/this-is-fine.jpg';
+  String _text = 'Здесь мог быть ваш мем';
 
   void _showOrHide() {
     _scaffoldKey.currentState?.showBottomSheet(
@@ -25,6 +29,12 @@ class MemeGeneratorScreenState extends State<MemeGeneratorScreen> {
   void changeUrl(String url) {
     setState(() {
       _url = url;
+    });
+  }
+
+  void changeText(String text) {
+    setState(() {
+      _text = text;
     });
   }
 
@@ -57,8 +67,9 @@ class MemeGeneratorScreenState extends State<MemeGeneratorScreen> {
     );
     return Scaffold(
       key: _scaffoldKey,
-      body: MainScreenImageUrl(
+      body: MainScreenMemeProperties(
         url: _url,
+        text: _text,
         child: Scaffold(
           backgroundColor: Colors.black,
           body: Center(
@@ -85,27 +96,37 @@ class MemeGeneratorScreenState extends State<MemeGeneratorScreen> {
                               child: Builder(builder: (innerContext) {
                                 return FutureBuilder(
                                   future: getImageWidget(
-                                      MainScreenImageUrl.of(innerContext).url),
+                                      MainScreenMemeProperties.of(innerContext).url),
                                   builder:
                                       (futureBuilderContextontext, snapshot) {
-                                    if (snapshot.hasData && snapshot.connectionState == ConnectionState.done) {
+                                    if (snapshot.hasData &&
+                                        snapshot.connectionState ==
+                                            ConnectionState.done) {
                                       return snapshot.data!;
                                     } else {
-                                      return const Center(child: CircularProgressIndicator(color: Colors.white,),);
+                                      return const Center(
+                                        child: CircularProgressIndicator(
+                                          color: Colors.white,
+                                        ),
+                                      );
                                     }
                                   },
                                 );
                               })),
                         ),
                       ),
-                      const Text(
-                        'Здесь мог бы быть ваш мем',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontFamily: 'Impact',
-                          fontSize: 40,
-                          color: Colors.white,
-                        ),
+                      Builder(
+                        builder: (innerContext) {
+                          return Text(
+                            MainScreenMemeProperties.of(innerContext).text,
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(
+                              fontFamily: 'Impact',
+                              fontSize: 40,
+                              color: Colors.white,
+                            ),
+                          );
+                        }
                       ),
                     ],
                   ),
@@ -123,45 +144,3 @@ class MemeGeneratorScreenState extends State<MemeGeneratorScreen> {
     );
   }
 }
-
-class DemotivatorSettingsModalWindow extends StatelessWidget {
-  const DemotivatorSettingsModalWindow({super.key, required this.parent});
-
-  final MemeGeneratorScreenState parent;
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-       
-      appBar: AppBar(
-        backgroundColor: Colors.black,
-        title: const Text('Настройки демотиватора', style: TextStyle(color: Colors.white),),
-      ),
-      body: Container(
-        color: Colors.black,
-        child: ListView(
-          children: [
-            FloatingActionButton(onPressed: () {
-              showBottomSheet(
-                context: context, 
-                builder: (context) {
-                  return ModalWindow(parent: parent);
-                },);
-            }, 
-            child: const Text('Получить картинку по ссылке')),
-            FloatingActionButton(onPressed: () {
-              showBottomSheet(
-                context: context, 
-                builder: (context) {
-                  return ModalWindow(parent: parent);
-                },);
-            }, 
-            child: const Text('Изменить текст демотиватора')),
-          ],
-        ),
-      )
-    );
-  }
-  
-}
-
