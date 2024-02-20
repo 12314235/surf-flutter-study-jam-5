@@ -88,36 +88,46 @@ class MemeGeneratorScreenState extends State<MemeGeneratorScreen> {
                             decoration: decoration,
                             child: Padding(
                                 padding: const EdgeInsets.all(4.0),
-                                child: Builder(builder: (innerContext) {
-                                  return FutureBuilder(
-                                    future: _imageSource.getImage(),
-                                    builder:
-                                        (futureBuilderContextontext, snapshot) {
-                                      if (snapshot.hasData &&
-                                          snapshot.connectionState ==
-                                              ConnectionState.done) {
-                                        return snapshot.data!;
-                                      } else {
-                                        return const Center(
-                                          child: CircularProgressIndicator(
-                                            color: Colors.white,
-                                          ),
-                                        );
-                                      }
-                                    },
-                                  );
-                                })),
+                                child: GestureDetector(
+                                  onTap: () {
+                                    _showOrHide();
+                                  },
+                                  child: Builder(builder: (innerContext) {
+                                    return FutureBuilder(
+                                      future: _imageSource.getImage(),
+                                      builder:
+                                          (futureBuilderContextontext, snapshot) {
+                                        if (snapshot.hasData && snapshot.connectionState == ConnectionState.done) {
+                                          return snapshot.data!;
+                                        } else if (snapshot.hasError) {
+                                          return const Center(child: Text("Ошибка загрузки("));
+                                        } else {
+                                          return const Center(
+                                            child: CircularProgressIndicator(
+                                              color: Colors.white,
+                                            ),
+                                          );
+                                        }
+                                      },
+                                    );
+                                  }),
+                                )),
                           ),
                         ),
                         Builder(
                           builder: (innerContext) {
-                            return Text(
-                              MainScreenMemeProperties.of(innerContext).text,
-                              textAlign: TextAlign.center,
-                              style: const TextStyle(
-                                fontFamily: 'Impact',
-                                fontSize: 40,
-                                color: Colors.white,
+                            return GestureDetector(
+                              onTap:() {
+                                _showOrHide();
+                              },
+                              child: Text(
+                                MainScreenMemeProperties.of(innerContext).text,
+                                textAlign: TextAlign.center,
+                                style: const TextStyle(
+                                  fontFamily: 'Impact',
+                                  fontSize: 40,
+                                  color: Colors.white,
+                                ),
                               ),
                             );
                           }
